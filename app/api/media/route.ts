@@ -22,6 +22,7 @@ function nodeToWebStream(nodeStream: any) {
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
+    const folderId = searchParams.get('folder_id'); // Add folder filtering
 
     try {
         if (id) {
@@ -70,7 +71,24 @@ export async function GET(request: Request) {
             });
         }
 
-        const [rows]: any = await pool.query('SELECT id, name, type, created_at FROM uploads ORDER BY created_at DESC');
+        // Modified query to support folder filtering
+        let query = 'SELECT id, name, type, folder_id, created_at FROM uploads';
+        const params: any[] = [];
+
+        if (folderId) {
+            query += ' WHERE folder_id = ?';
+            params.push(folderId === 'null' ? null : folderId);
+        } else {
+            // If no folderId is provided, show root files (those with folder_id NULL)
+            // or we could show all. Let's show all for "All Files" tab but filter if explicitly "null"
+            if (folderId === 'null') {
+                query += ' WHERE folder_id IS NULL';
+            }
+        }
+
+        query += ' ORDER BY created_at DESC';
+        const [rows]: any = await pool.query(query, params);
+
         return NextResponse.json((Array.isArray(rows) ? rows : []).map((item: any) => ({
             ...item,
             url: `/api/media?id=${item.id}`
@@ -87,6 +105,7 @@ export async function POST(request: Request) {
         const formData = await request.formData();
         const file = formData.get('file') as File;
         const type = formData.get('type') as string;
+        const folderId = formData.get('folder_id') as string;
 
         if (!file) return NextResponse.json({ error: 'No file provided' }, { status: 400 });
 
@@ -100,8 +119,8 @@ export async function POST(request: Request) {
         await writeFile(filePath, Buffer.from(bytes));
 
         const [result]: any = await pool.query(
-            'INSERT INTO uploads (name, type, mime_type, file_path) VALUES (?, ?, ?, ?)',
-            [file.name, type, file.type, filePath]
+            'INSERT INTO uploads (name, type, folder_id, mime_type, file_path) VALUES (?, ?, ?, ?, ?)',
+            [file.name, type, folderId && folderId !== 'null' ? folderId : null, file.type, filePath]
         );
 
         return NextResponse.json({

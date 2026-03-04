@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CloudVault ☁️
 
-## Getting Started
+CloudVault is a premium, secure digital asset management system designed for seamless storage, organization, and access to media and documents. Built with a focus on high-end aesthetics and robust functionality, it provides a centralized "vault" for administrators to manage their digital content with ease.
 
-First, run the development server:
+## ✨ Key Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+-   **Multi-Format Support**: Effortlessly upload and manage **Images** (PNG, JPG, WEBP), **Videos** (MP4, MOV, WebM), and **Documents** (PDF, DOCX, TXT, etc.).
+-   **Intelligent Organization**: Create custom folders to categorize your files. Navigate through your hierarchy with an intuitive breadcrumb system.
+-   **Premium Glassmorphism UI**: A stunning, modern interface featuring high-end "glass" effects, mesh gradients, and smooth animations powered by the **Outfit** typography.
+-   **Fully Responsive**: Access your vault from any device. The adaptive sidebar collapses into a sleek mobile menu for on-the-go management.
+-   **Real-time Upload Tracking**: Monitor your uploads with dynamic progress bars and status indicators.
+-   **Automated Database Management**: Self-healing database architecture that automatically performs migrations and repairs upon server startup.
+-   **Instant Previews**: High-performance video player and image lightbox built-in for immediate content review.
+
+## 🛠 Tech Stack
+
+-   **Framework**: [Next.js 14](https://nextjs.org/) (App Router)
+-   **Language**: [TypeScript](https://www.typescriptlang.org/)
+-   **Database**: [MySQL](https://www.mysql.com/) with `mysql2` connection pooling
+-   **Icons**: [Lucide React](https://lucide.dev/)
+-   **Styling**: Vanilla CSS with Advanced Glassmorphism & Mesh Gradients
+
+## 🚀 Getting Started
+
+### 1. Prerequisites
+-   Node.js 18+ installed
+-   A running MySQL database instance
+
+### 2. Environment Setup
+Create a `.env.local` file in the root directory and add your database credentials:
+```env
+DB_HOST=your_host
+DB_PORT=3306
+DB_USER=your_user
+DB_PASSWORD=your_password
+DB_NAME=your_database_name
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. Installation
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 4. Run the App
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 5. Initialize Database
+Once the app is running, log in with the default administrator credentials (**Admin** / **password**). The system will automatically detect and initialize the required database tables.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🛡 Security Note
+CloudVault stores physical files in a dedicated `uploads_vault` directory outside of the public web root for enhanced security. Access to these files is piped through protected API routes.
